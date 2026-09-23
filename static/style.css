@@ -1554,3 +1554,14 @@ dialog::backdrop {
     transform:rotate(360deg);
   }
 }
+
+/* Live mode reuses the existing cards and timeline. */
+[hidden] { display: none !important; }
+.live-info { padding: 12px 16px; margin-bottom: 14px; color: #427361; font-size: 11px; line-height: 1.8; }
+.live-info.stale { background: #fff5df; color: #906622; }
+.demo-badge.live { background: #eaf6ef; color: #237557; border-color: #cfe6d9; }
+.live-explanation { line-height: 1.6; }
+#data-mode { min-width: 80px; }
+#refresh-live { height: 39px; }
+@media (max-width: 899px) { #track-form { flex-wrap: wrap; } }
+@media (max-width: 520px) { #track-form label:first-child { min-width: 80px; flex: 0; } #track-form label:nth-child(2) { flex: 1; width: auto; } #track-form label:nth-child(3) { width: 100%; } }

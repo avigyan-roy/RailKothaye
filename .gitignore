@@ -4,3 +4,5 @@ __pycache__/
 .vercel/
 public/
 .env
+.env.*
+!.env.example

@@ -8,6 +8,7 @@ from pathlib import Path
 from flask import Flask, jsonify, request, session, g
 from werkzeug.exceptions import HTTPException
 import replay
+import live_provider
 from geo import route_polyline
 from predictor import build_stats, load_history, predict_journey
 from state import build_state
@@ -36,6 +37,8 @@ STATS = build_stats(load_history(), TRAINS)
 
 @app.before_request
 def restore_replay_session():
+    if data_mode() == 'LIVE':
+        return
     # Each browser sends its complete demo state in Flask's signed cookie. Any
     # serverless instance can reconstruct the same clock without disk writes.
     saved = session.get('clock')
@@ -49,6 +52,8 @@ def restore_replay_session():
 
 @app.after_request
 def save_replay_session(response):
+    if request.path.startswith('/api/'):
+        response.headers['Cache-Control'] = 'no-store'
     if hasattr(g, 'manual') and request.path.startswith('/api/'):
         session['clock'] = replay.clock()
         session['manual_conditions'] = g.manual
@@ -133,19 +138,47 @@ def index():
     return app.send_static_file('index.html')
 
 
+
+def data_mode():
+    mode = request.args.get('mode', os.environ.get('RAILETA_DATA_MODE', 'DEMO')).upper()
+    if mode not in ('LIVE', 'DEMO'):
+        raise ValueError('mode must be LIVE or DEMO')
+    return mode
+
+
+@app.get('/api/config')
+def configuration():
+    return jsonify(data_mode=data_mode(), live_configured=bool(os.environ.get('RAILRADAR_API_KEY', '').strip()),
+                   live_poll_seconds=live_provider.poll_seconds(), provider='RailRadar')
+
+
+def live_only_error(message='This control is available only in DEMO mode.'):
+    return jsonify(error=message, code='DEMO_ONLY', data_mode='LIVE'), 409
+
+
 @app.get('/api/trains')
 def trains():
+    if data_mode() == 'LIVE':
+        return jsonify([])  # Type any five-digit train; do not fetch a bulk list.
     return jsonify([{key: t[key] for key in ('train_number', 'name', 'origin', 'destination')} for t in TRAINS.values()])
 
 
 @app.get('/api/train/<number>/live')
 def live(number):
+    if data_mode() == 'LIVE':
+        return jsonify(live_provider.get_live(number, request.args.get('date') or None))
     train = get_train(number)
     return jsonify(live_payload(train)) if train else unknown_train()
 
 
 @app.get('/api/train/<number>/eta')
 def eta(number):
+    if data_mode() == 'LIVE':
+        payload = live_provider.get_live(number, request.args.get('date') or None)
+        keys = ('code', 'name', 'sched_arr', 'baseline_eta', 'predicted_eta', 'predicted_delay_min', 'eta_source')
+        return jsonify([{**{key: stop[key] for key in keys}, 'data_mode': 'LIVE',
+                         'observed_at': payload['observed_at'], 'stale': payload['stale']}
+                        for stop in payload['stops'] if stop['status'] == 'UPCOMING'])
     train = get_train(number)
     if not train:
         return unknown_train()
@@ -162,6 +195,8 @@ def json_body():
 
 @app.route('/api/sim', methods=['GET', 'POST'])
 def simulator():
+    if data_mode() == 'LIVE':
+        return live_only_error()
     body = json_body() if request.method == 'POST' else {}
     number = str(body.get('train_number', request.args.get('train_number', next(iter(TRAINS)))))
     train = get_train(number)
@@ -181,6 +216,8 @@ def simulator():
 
 @app.route('/api/conditions', methods=['GET', 'POST', 'DELETE'])
 def conditions_api():
+    if data_mode() == 'LIVE':
+        return jsonify([]) if request.method == 'GET' else live_only_error()
     body = json_body() if request.method == 'POST' else {}
     number = str(body.get('train_number', request.args.get('train_number', next(iter(TRAINS)))))
     train = get_train(number)
@@ -230,6 +267,13 @@ def conditions_api():
 
 @app.get('/api/station/<code>/arrivals')
 def station_arrivals(code):
+    if data_mode() == 'LIVE':
+        number = request.args.get('train_number')
+        if not number:
+            return jsonify(error='Choose train_number for a live station lookup; bulk polling is disabled.', code='TRAIN_REQUIRED'), 400
+        payload = live_provider.get_live(number, request.args.get('date') or None)
+        return jsonify([{**stop, 'train_number': number, 'data_mode': 'LIVE', 'stale': payload['stale']}
+                        for stop in payload['stops'] if stop['code'] == code.upper() and stop['status'] == 'UPCOMING'])
     code = code.upper()
     if code not in STATIONS:
         return jsonify(error='Unknown station code', available=list(STATIONS)), 404
@@ -243,6 +287,8 @@ def station_arrivals(code):
 
 @app.get('/api/evaluation')
 def evaluation():
+    if data_mode() == 'LIVE':
+        return live_only_error('The backtest uses simulated data and is available only in DEMO mode.')
     if not (ROOT / 'data' / 'evaluation.json').exists():
         return jsonify(error='Run python evaluate.py to generate the backtest results'), 503
     return jsonify(read_json('evaluation.json'))
@@ -250,11 +296,17 @@ def evaluation():
 
 @app.errorhandler(Exception)
 def handle_error(error):
+    if isinstance(error, live_provider.ProviderError):
+        response = jsonify(error=str(error), code=error.code, data_mode='LIVE', retry_after=error.retry_after)
+        if error.retry_after:
+            response.headers['Retry-After'] = str(error.retry_after)
+        return response, error.status
     if isinstance(error, HTTPException):
         return jsonify(error=error.description), error.code
     if isinstance(error, (ValueError, TypeError)):
         return jsonify(error=str(error)), 400
-    app.logger.exception('Request failed')
+    # Exception messages may contain third-party data: log no raw exception.
+    app.logger.error('Request failed (%s)', type(error).__name__)
     return jsonify(error='Unable to complete request. Check the local server log.'), 500
 
 
