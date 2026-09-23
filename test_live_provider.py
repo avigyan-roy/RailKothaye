@@ -197,14 +197,15 @@ class LiveProviderTests(unittest.TestCase):
                 self.assertEqual(response.json['code'], 'LIVE_NOT_CONFIGURED')
             opened.assert_not_called()
 
-    def test_live_only_and_homepage_routes(self):
-        with patch('live_provider._fetch', return_value=copy.deepcopy(FIXTURE)):
-            self.assertEqual(self.client.get('/api/train/12301/live').json['data_mode'], 'LIVE')
-        with patch('live_provider.get_live', side_effect=AssertionError('Provider called')):
-            self.assertEqual(self.client.get('/api/train/12301/live?mode=DEMO').status_code, 400)
+    def test_modes_controls_and_homepage_routes(self):
+        with patch('app.live_payload', side_effect=AssertionError('Replay called')):
+            with patch('live_provider._fetch', return_value=copy.deepcopy(FIXTURE)):
+                self.assertEqual(self.client.get('/api/train/12301/live').json['data_mode'], 'LIVE')
+        with patch('live_provider.get_live', side_effect=AssertionError('Live called')):
+            self.assertEqual(self.client.get('/api/train/12301/live?mode=DEMO').json['data_mode'], 'REPLAY')
         for url in ('/api/sim', '/api/conditions'):
-            self.assertEqual(self.client.post(url, json={}).status_code, 404)
-        self.assertEqual(self.client.get('/api/evaluation').status_code, 404)
+            self.assertEqual(self.client.post(url, json={}).status_code, 409)
+        self.assertEqual(self.client.get('/api/evaluation').status_code, 409)
         for url in ('/', '/index.html', '/static/app.js', '/static/style.css'):
             response = self.client.get(url)
             self.assertEqual(response.status_code, 200)
