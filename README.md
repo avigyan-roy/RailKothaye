@@ -59,7 +59,7 @@ The bounded in-memory cache coalesces repeated requests **only within one Python
 ### Verification performed
 
 - **Offline:** 28 standard-library tests (15 existing demo tests plus 13 live tests), covering normalization, overnight ETAs, missing/stale data, journey statuses, HTTP errors, retries, caching, mode isolation, routes and secret redaction. Run `python3 -m unittest -v test_raileta test_live_provider`.
-- **Authenticated:** On 23 September 2026, the supplied key successfully retrieved train **12301** through the new backend. The browser displayed RailRadar's current route with nine halts, observation age, location and next-day destination ETA. This confirms that particular provider integration and journey, not universal coverage, accuracy or GPS provenance.
+- **Authenticated:** On 23 September 2026, the supplied key successfully retrieved train **12301** through the local backend (`/api/train/12301/live?mode=LIVE` and the `/eta` endpoint), including a genuine next-day (`+1`) IST ETA for an overnight leg, `cache_hit` coalescing on a repeat request within the poll window, a clean 400 for an invalid train number, and zero occurrences of the API key in any response body. This confirms that particular provider integration and journey, not universal coverage, accuracy or GPS provenance.
 - **Deployment:** These changes are local until committed, pushed and redeployed with the variables above. No production deployment was performed as part of this change.
 
 The remaining sections describe **DEMO mode**, its synthetic predictor and backtest. All demo data is simulated; demo station coordinates/distances and timetable times are illustrative.
@@ -95,10 +95,10 @@ The code and path handling are portable; checks were executed on Linux, not on p
 
 ## Deploy on Vercel
 
-The deployable project root is **`raileta/`**, not its parent directory.
+The deployable project root is this `RailKothaye` folder, which is already its own Git repository.
 
-1. Commit/upload this project to your own Git repository, including the generated files in `data/`.
-2. Import that repository in Vercel and set **Root Directory** to `raileta` if the repository contains the outer folder. If this folder itself is the repository root, use `.`.
+1. Commit/push this repository, including the generated files in `data/`.
+2. Import that repository in Vercel and keep **Root Directory** at `.`.
 3. Use the **Flask** framework preset (or let Vercel detect it). Keep the default install command. The checked-in configuration sets the build command to `python build.py`; leave the output directory at the framework default.
 4. Deploy. `app.py` exports the Flask instance; `requirements.txt` lists the sole direct dependency. `build.py` stages the three frontend source files into `public/`, which Vercel serves through its CDN. API routes run as a Python function, and the small JSON/CSV dataset is included in that function.
 5. Optionally set a stable `RAILETA_SESSION_SECRET` environment variable for signing demo preferences, then redeploy. The built-in fallback is public and deliberately protects no identity, credentials, permissions, or private data. There is no authentication in this prototype.
