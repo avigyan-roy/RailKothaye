@@ -87,7 +87,7 @@ button {
   color:var(--muted);
   margin-top:2px;
 }
-.demo-badge {
+.data-badge {
   display:flex;
   align-items:center;
   gap:6px;
@@ -101,7 +101,7 @@ button {
   letter-spacing:.55px;
   white-space:nowrap;
 }
-.demo-badge i {
+.data-badge i {
   width:5px;
   height:5px;
   border-radius:50%;
@@ -113,7 +113,7 @@ button {
   align-items:center;
   gap:24px;
 }
-#sim-clock {
+#live-clock {
   font-size:11px;
   color:#647387;
   font-variant-numeric:tabular-nums;
@@ -1209,7 +1209,7 @@ dialog::backdrop {
   .header-right {
     gap:10px;
   }
-  #sim-clock {
+  #live-clock {
     font-size:10px;
   }
   main {
@@ -1244,7 +1244,7 @@ dialog::backdrop {
   .brand {
     font-size:24px;
   }
-  .demo-badge {
+  .data-badge {
     font-size:8px;
   }
   .search-title h1 {
@@ -1393,7 +1393,7 @@ dialog::backdrop {
     font-size:23px;
     gap:8px;
   }
-  .demo-badge {
+  .data-badge {
     font-size:7px;
     letter-spacing:.1px;
     padding:6px;
@@ -1559,9 +1559,7 @@ dialog::backdrop {
 [hidden] { display: none !important; }
 .live-info { padding: 12px 16px; margin-bottom: 14px; color: #427361; font-size: 11px; line-height: 1.8; }
 .live-info.stale { background: #fff5df; color: #906622; }
-.demo-badge.live { background: #eaf6ef; color: #237557; border-color: #cfe6d9; }
+.data-badge.live { background: #eaf6ef; color: #237557; border-color: #cfe6d9; }
 .live-explanation { line-height: 1.6; }
-#data-mode { min-width: 80px; }
 #refresh-live { height: 39px; }
 @media (max-width: 899px) { #track-form { flex-wrap: wrap; } }
-@media (max-width: 520px) { #track-form label:first-child { min-width: 80px; flex: 0; } #track-form label:nth-child(2) { flex: 1; width: auto; } #track-form label:nth-child(3) { width: 100%; } }
