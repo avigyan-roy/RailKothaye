@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#1f4e8c"><meta name="description" content="RailETA: an explainable train arrival prediction demo with a live replay map and section-by-section ETAs.">
+  <title>RailETA — Dynamic Train Arrival Prediction</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%231f4e8c'/%3E%3Ctext x='8' y='29' font-size='28' fill='white'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="RailETA home"><span class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="15" rx="4"/><path d="M5 10h14M12 3v7M8 21l2-3m6 3-2-3"/><path d="M8 14h1m6 0h1" stroke-width="2.8"/></svg></span><span>Rail<span class="brand-blue">ETA</span><small>Dynamic train arrival prediction</small></span></a>
+    <span class="demo-badge"><i></i> DEMO / SIMULATION DATA</span>
+    <div class="header-right"><span id="sim-clock">Sim time · Connecting…</span><button id="how-open" class="text-button">ⓘ <span>How it works</span></button></div>
+  </header>
+  <main>
+    <section class="search-area" aria-label="Track a train">
+      <div class="search-title"><span class="eyebrow">AHEAD OF THE TIMETABLE</span><h1>Know what’s ahead.</h1></div>
+      <form id="track-form"><label>Train number<div class="input-icon"><span aria-hidden="true">⌕</span><input id="train-input" list="train-list" value="12301" placeholder="e.g. 12301" required autocomplete="off" aria-label="Train number"><datalist id="train-list"></datalist></div></label><label>Journey date · IST<input id="journey-date" type="date" required title="This replay is anchored to today in IST"></label><button class="primary" id="track-button" type="submit">Track train <span aria-hidden="true">→</span></button></form>
+    </section>
+    <div id="error" role="status" aria-live="polite" hidden></div>
+    <div class="workspace">
+      <section class="map-card card" aria-label="Live journey map">
+        <div class="map-heading"><div><span class="eyebrow"><span class="live-dot"></span> JOURNEY REPLAY</span><h2 id="route-title">Howrah <span>→</span> New Delhi</h2><p id="train-title">12301 · Rajdhani (DEMO)</p></div><span class="outline-badge" id="route-distance">1,447 km</span></div>
+        <div class="map-wrap"><div id="map" aria-label="Route and train position"></div><div class="map-toggles"><label><input id="follow" type="checkbox" checked> Follow train</label><label><input id="passing" type="checkbox"> Passing points</label><button id="fit-route" title="Show whole route">⤢ Route</button></div><div id="map-fallback" hidden>Map tiles need an internet connection. Journey data remains available.</div><div class="map-bottom"><div><span class="live-dot"></span><strong id="map-location">Locating train…</strong><small id="map-position">Loading recorded GPS</small></div><span id="map-source" class="source-badge">GPS</span></div></div>
+        <div class="map-legend"><span><i class="legend-line"></i> Route</span><span><i class="legend-dot"></i> Station</span><span><i class="legend-line restriction"></i> Restriction</span><span><i class="legend-line congestion"></i> Congestion</span><span><i class="legend-line fog"></i> Fog</span><span class="map-credit">Approximate route</span></div>
+      </section>
+      <aside class="journey-panel" aria-label="Arrival prediction and journey timeline">
+        <section id="destination-hero" class="hero card" aria-label="Destination arrival"><div class="skeleton">Calculating the journey ahead…</div></section>
+        <section id="status-card" class="status-card card" aria-label="Current train status"></section>
+        <section class="timeline-card card"><div class="section-heading"><h2>Journey timeline</h2><span class="eyebrow" id="stop-count">8 STOPS</span></div><p class="section-subtitle">A fresh prediction for every stop.</p><div id="timeline"><div class="skeleton">Receiving replay data…</div></div></section>
+        <section class="changes-card card"><div class="section-heading"><h2>Destination ETA changes</h2><span class="live-dot"></span></div><ol id="change-log"><li class="empty-note">Changes of 2 minutes or more appear here.</li></ol></section>
+      </aside>
+    </div>
+    <section class="controls card" aria-label="Simulation controls"><div class="control-top"><div class="control-caption"><span class="control-icon">▷</span><div><h2>Replay studio</h2><small>Explore the journey, faster.</small></div></div><label class="speed-label">Speed <select id="speed"><option value="1">1×</option><option value="10">10×</option><option value="60" selected>60×</option><option value="120">120×</option></select></label><button id="restart" class="subtle-button">↺ Restart</button><div class="jump-group"><label for="jump-stop">Jump before</label><select id="jump-stop" aria-label="Jump to just before station"></select><button id="jump" class="subtle-button">Go →</button></div><span class="poll-status"><span class="live-dot"></span> Refreshes every 5 s</span></div><div class="what-if"><span class="eyebrow">WHAT IF?</span><button data-condition="CONGESTION"><span class="condition-dot orange"></span>Report congestion ahead</button><button data-condition="SPEED_RESTRICTION"><span class="condition-dot purple"></span>Add speed restriction</button><button data-condition="WEATHER_FOG"><span class="condition-dot bluegrey"></span>Report fog ahead</button><button id="clear-reports" class="text-button">Clear my reports</button><span id="control-status" role="status"></span></div></section>
+    <details class="accuracy card" id="accuracy"><summary><div><span class="accuracy-icon">▥</span><strong>Model accuracy</strong><span class="accuracy-caption">Backtest on 15 simulated journeys per train (DEMO data)</span></div><span class="accuracy-summary" id="accuracy-summary">View results</span><span class="chevron">⌄</span></summary><div id="evaluation"><p>Loading held-out backtest results…</p></div></details>
+  </main>
+  <footer><span>RailETA <span class="footer-divider">/</span> Explainable arrivals. Every section.</span><p>Simulated data for demonstration. Coordinates approximate, timetable illustrative. Not affiliated with Indian Railways.</p></footer>
+  <dialog id="how-modal"><div class="modal-heading"><div><span class="eyebrow">THE IDEA BEHIND RAILETA</span><h2>Predict the journey still to come.</h2></div><button id="how-close" class="icon-button" aria-label="Close explanation">×</button></div><p class="modal-intro">A current delay is a snapshot. Our ETA considers each remaining section, the next halt, and the conditions ahead.</p><div class="how-cycle"><article><span>01</span><h3>Receive data</h3><p>Replay GPS pings and snap them to the train’s route, rejecting outliers.</p></article><article><span>02</span><h3>Assess conditions</h3><p>Account for congestion, temporary speed restrictions, fog, and stale GPS.</p></article><article><span>03</span><h3>Predict remaining travel time</h3><p>Use historical section medians and station dwells, respecting scheduled departures.</p></article><article><span>04</span><h3>Update station ETAs</h3><p>Show the prediction beside the baseline, with an uncertainty range and reasons.</p></article></div><div class="model-equation">Baseline = scheduled arrival + current delay<br><strong>RailETA = now + remaining section travel + remaining station halts</strong></div><p class="modal-note">All data is simulated. Backtests use unseen journey dates; these results do not establish real-world accuracy.</p></dialog>
+</body>
+</html>

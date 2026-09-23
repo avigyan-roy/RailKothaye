@@ -1,0 +1,246 @@
+{
+  "12301": {
+    "train_number": "12301",
+    "name": "Howrah – New Delhi Rajdhani (DEMO)",
+    "origin": "HWH",
+    "destination": "NDLS",
+    "route": [
+      {
+        "code": "HWH",
+        "type": "STOP",
+        "km": 0,
+        "day": 1,
+        "arr": null,
+        "dep": "16:50"
+      },
+      {
+        "code": "BWN",
+        "type": "PASS",
+        "km": 95
+      },
+      {
+        "code": "DGR",
+        "type": "PASS",
+        "km": 158
+      },
+      {
+        "code": "ASN",
+        "type": "STOP",
+        "km": 200,
+        "day": 1,
+        "arr": "18:48",
+        "dep": "18:50"
+      },
+      {
+        "code": "DHN",
+        "type": "STOP",
+        "km": 259,
+        "day": 1,
+        "arr": "19:43",
+        "dep": "19:48"
+      },
+      {
+        "code": "KQR",
+        "type": "PASS",
+        "km": 382
+      },
+      {
+        "code": "GAYA",
+        "type": "STOP",
+        "km": 458,
+        "day": 1,
+        "arr": "22:03",
+        "dep": "22:06"
+      },
+      {
+        "code": "SSM",
+        "type": "PASS",
+        "km": 558
+      },
+      {
+        "code": "DDU",
+        "type": "STOP",
+        "km": 661,
+        "day": 2,
+        "arr": "00:35",
+        "dep": "00:45"
+      },
+      {
+        "code": "MZP",
+        "type": "PASS",
+        "km": 724
+      },
+      {
+        "code": "PRYJ",
+        "type": "STOP",
+        "km": 814,
+        "day": 2,
+        "arr": "02:28",
+        "dep": "02:30"
+      },
+      {
+        "code": "FTP",
+        "type": "PASS",
+        "km": 931
+      },
+      {
+        "code": "CNB",
+        "type": "STOP",
+        "km": 1008,
+        "day": 2,
+        "arr": "04:45",
+        "dep": "04:50"
+      },
+      {
+        "code": "ETW",
+        "type": "PASS",
+        "km": 1146
+      },
+      {
+        "code": "TDL",
+        "type": "PASS",
+        "km": 1238
+      },
+      {
+        "code": "ALJN",
+        "type": "PASS",
+        "km": 1316
+      },
+      {
+        "code": "GZB",
+        "type": "PASS",
+        "km": 1422
+      },
+      {
+        "code": "NDLS",
+        "type": "STOP",
+        "km": 1447,
+        "day": 2,
+        "arr": "10:00",
+        "dep": null
+      }
+    ]
+  },
+  "12302": {
+    "train_number": "12302",
+    "name": "New Delhi – Howrah Rajdhani (DEMO)",
+    "origin": "NDLS",
+    "destination": "HWH",
+    "route": [
+      {
+        "code": "NDLS",
+        "type": "STOP",
+        "km": 0,
+        "day": 1,
+        "arr": null,
+        "dep": "16:55"
+      },
+      {
+        "code": "GZB",
+        "type": "PASS",
+        "km": 25
+      },
+      {
+        "code": "ALJN",
+        "type": "PASS",
+        "km": 131
+      },
+      {
+        "code": "TDL",
+        "type": "PASS",
+        "km": 209
+      },
+      {
+        "code": "ETW",
+        "type": "PASS",
+        "km": 301
+      },
+      {
+        "code": "CNB",
+        "type": "STOP",
+        "km": 439,
+        "day": 1,
+        "arr": "22:00",
+        "dep": "22:05"
+      },
+      {
+        "code": "FTP",
+        "type": "PASS",
+        "km": 516
+      },
+      {
+        "code": "PRYJ",
+        "type": "STOP",
+        "km": 633,
+        "day": 2,
+        "arr": "00:15",
+        "dep": "00:17"
+      },
+      {
+        "code": "MZP",
+        "type": "PASS",
+        "km": 723
+      },
+      {
+        "code": "DDU",
+        "type": "STOP",
+        "km": 786,
+        "day": 2,
+        "arr": "02:00",
+        "dep": "02:10"
+      },
+      {
+        "code": "SSM",
+        "type": "PASS",
+        "km": 889
+      },
+      {
+        "code": "GAYA",
+        "type": "STOP",
+        "km": 989,
+        "day": 2,
+        "arr": "04:39",
+        "dep": "04:42"
+      },
+      {
+        "code": "KQR",
+        "type": "PASS",
+        "km": 1065
+      },
+      {
+        "code": "DHN",
+        "type": "STOP",
+        "km": 1188,
+        "day": 2,
+        "arr": "06:57",
+        "dep": "07:02"
+      },
+      {
+        "code": "ASN",
+        "type": "STOP",
+        "km": 1247,
+        "day": 2,
+        "arr": "07:55",
+        "dep": "07:57"
+      },
+      {
+        "code": "DGR",
+        "type": "PASS",
+        "km": 1289
+      },
+      {
+        "code": "BWN",
+        "type": "PASS",
+        "km": 1352
+      },
+      {
+        "code": "HWH",
+        "type": "STOP",
+        "km": 1447,
+        "day": 2,
+        "arr": "09:55",
+        "dep": null
+      }
+    ]
+  }
+}

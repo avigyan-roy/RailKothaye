@@ -1,0 +1,69 @@
+[
+  {
+    "id": "C1",
+    "train_numbers": [
+      "12301"
+    ],
+    "type": "SPEED_RESTRICTION",
+    "from": "GAYA",
+    "to": "DDU",
+    "restricted_km": 25,
+    "speed_kmh": 30,
+    "reported_at_min": 0,
+    "cleared_at_min": null,
+    "note": "Track maintenance near Sasaram (DEMO)"
+  },
+  {
+    "id": "C2",
+    "train_numbers": [
+      "12301"
+    ],
+    "type": "CONGESTION",
+    "from": "DDU",
+    "to": "PRYJ",
+    "extra_min": 15,
+    "reported_at_min": 330,
+    "cleared_at_min": 420,
+    "note": "Heavy traffic ahead (DEMO)"
+  },
+  {
+    "id": "C3",
+    "train_numbers": [
+      "12301"
+    ],
+    "type": "WEATHER_FOG",
+    "from": "CNB",
+    "to": "NDLS",
+    "factor": 1.15,
+    "reported_at_min": 600,
+    "cleared_at_min": null,
+    "note": "Dense fog reported (DEMO)"
+  },
+  {
+    "id": "C4",
+    "train_numbers": [
+      "12302"
+    ],
+    "type": "CONGESTION",
+    "from": "NDLS",
+    "to": "CNB",
+    "extra_min": 12,
+    "reported_at_min": 0,
+    "cleared_at_min": 320,
+    "note": "Traffic approaching Kanpur (DEMO)"
+  },
+  {
+    "id": "C5",
+    "train_numbers": [
+      "12302"
+    ],
+    "type": "SPEED_RESTRICTION",
+    "from": "DDU",
+    "to": "GAYA",
+    "restricted_km": 15,
+    "speed_kmh": 45,
+    "reported_at_min": 200,
+    "cleared_at_min": null,
+    "note": "Temporary maintenance restriction (DEMO)"
+  }
+]

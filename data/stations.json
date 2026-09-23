@@ -1,0 +1,110 @@
+[
+  {
+    "code": "HWH",
+    "name": "Howrah Jn",
+    "lat": 22.5835,
+    "lon": 88.3426
+  },
+  {
+    "code": "BWN",
+    "name": "Barddhaman Jn",
+    "lat": 23.2497,
+    "lon": 87.8697
+  },
+  {
+    "code": "DGR",
+    "name": "Durgapur",
+    "lat": 23.494,
+    "lon": 87.318
+  },
+  {
+    "code": "ASN",
+    "name": "Asansol Jn",
+    "lat": 23.6904,
+    "lon": 86.975
+  },
+  {
+    "code": "DHN",
+    "name": "Dhanbad Jn",
+    "lat": 23.7916,
+    "lon": 86.4297
+  },
+  {
+    "code": "KQR",
+    "name": "Koderma Jn",
+    "lat": 24.467,
+    "lon": 85.595
+  },
+  {
+    "code": "GAYA",
+    "name": "Gaya Jn",
+    "lat": 24.8043,
+    "lon": 84.9993
+  },
+  {
+    "code": "SSM",
+    "name": "Sasaram Jn",
+    "lat": 24.952,
+    "lon": 84.012
+  },
+  {
+    "code": "DDU",
+    "name": "Pt. Deen Dayal Upadhyaya Jn",
+    "lat": 25.2795,
+    "lon": 83.118
+  },
+  {
+    "code": "MZP",
+    "name": "Mirzapur",
+    "lat": 25.144,
+    "lon": 82.569
+  },
+  {
+    "code": "PRYJ",
+    "name": "Prayagraj Jn",
+    "lat": 25.4467,
+    "lon": 81.826
+  },
+  {
+    "code": "FTP",
+    "name": "Fatehpur",
+    "lat": 25.93,
+    "lon": 80.813
+  },
+  {
+    "code": "CNB",
+    "name": "Kanpur Central",
+    "lat": 26.454,
+    "lon": 80.351
+  },
+  {
+    "code": "ETW",
+    "name": "Etawah Jn",
+    "lat": 26.778,
+    "lon": 79.023
+  },
+  {
+    "code": "TDL",
+    "name": "Tundla Jn",
+    "lat": 27.207,
+    "lon": 78.235
+  },
+  {
+    "code": "ALJN",
+    "name": "Aligarh Jn",
+    "lat": 27.887,
+    "lon": 78.08
+  },
+  {
+    "code": "GZB",
+    "name": "Ghaziabad",
+    "lat": 28.649,
+    "lon": 77.429
+  },
+  {
+    "code": "NDLS",
+    "name": "New Delhi",
+    "lat": 28.643,
+    "lon": 77.2195
+  }
+]

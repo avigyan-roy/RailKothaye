@@ -1,0 +1,155 @@
+{
+  "data_mode": "SIMULATED",
+  "training_days_per_train": 45,
+  "test_days_per_train": 15,
+  "train_numbers": [
+    "12301",
+    "12302"
+  ],
+  "train_date_range": [
+    "2026-07-25",
+    "2026-09-07"
+  ],
+  "test_date_range": [
+    "2026-09-08",
+    "2026-09-22"
+  ],
+  "assumption": "Section conditions are reported before the train reaches them; hidden noise and future actual times are never model inputs.",
+  "overall": {
+    "label": "Overall",
+    "count": 840,
+    "baseline": {
+      "mae": 16.706,
+      "median_absolute_error": 10.322,
+      "bias": -1.712,
+      "within_5_pct": 24.29,
+      "within_10_pct": 47.14
+    },
+    "model": {
+      "mae": 8.0,
+      "median_absolute_error": 4.475,
+      "bias": -0.936,
+      "within_5_pct": 51.67,
+      "within_10_pct": 73.69
+    },
+    "improvement_pct": 52.11
+  },
+  "horizons": [
+    {
+      "label": "1 stop ahead",
+      "count": 210,
+      "baseline": {
+        "mae": 9.995,
+        "median_absolute_error": 7.608,
+        "bias": 3.318,
+        "within_5_pct": 32.86,
+        "within_10_pct": 60.0
+      },
+      "model": {
+        "mae": 5.007,
+        "median_absolute_error": 3.608,
+        "bias": -0.295,
+        "within_5_pct": 64.76,
+        "within_10_pct": 87.62
+      },
+      "improvement_pct": 49.9
+    },
+    {
+      "label": "2\u20133 stops ahead",
+      "count": 330,
+      "baseline": {
+        "mae": 14.903,
+        "median_absolute_error": 10.1,
+        "bias": -0.755,
+        "within_5_pct": 24.85,
+        "within_10_pct": 49.09
+      },
+      "model": {
+        "mae": 7.342,
+        "median_absolute_error": 4.421,
+        "bias": -0.795,
+        "within_5_pct": 52.12,
+        "within_10_pct": 75.45
+      },
+      "improvement_pct": 50.73
+    },
+    {
+      "label": "4+ stops ahead",
+      "count": 300,
+      "baseline": {
+        "mae": 23.386,
+        "median_absolute_error": 15.257,
+        "bias": -6.287,
+        "within_5_pct": 17.67,
+        "within_10_pct": 36.0
+      },
+      "model": {
+        "mae": 10.819,
+        "median_absolute_error": 6.329,
+        "bias": -1.539,
+        "within_5_pct": 42.0,
+        "within_10_pct": 62.0
+      },
+      "improvement_pct": 53.74
+    }
+  ],
+  "distances": [
+    {
+      "label": "<150 km",
+      "count": 30,
+      "baseline": {
+        "mae": 3.342,
+        "median_absolute_error": 3.575,
+        "bias": 0.441,
+        "within_5_pct": 80.0,
+        "within_10_pct": 96.67
+      },
+      "model": {
+        "mae": 2.978,
+        "median_absolute_error": 2.821,
+        "bias": -1.073,
+        "within_5_pct": 86.67,
+        "within_10_pct": 100.0
+      },
+      "improvement_pct": 10.89
+    },
+    {
+      "label": "150\u2013500 km",
+      "count": 390,
+      "baseline": {
+        "mae": 11.969,
+        "median_absolute_error": 8.937,
+        "bias": 0.929,
+        "within_5_pct": 27.18,
+        "within_10_pct": 54.62
+      },
+      "model": {
+        "mae": 5.924,
+        "median_absolute_error": 3.95,
+        "bias": -0.848,
+        "within_5_pct": 60.26,
+        "within_10_pct": 83.85
+      },
+      "improvement_pct": 50.51
+    },
+    {
+      "label": ">500 km",
+      "count": 420,
+      "baseline": {
+        "mae": 22.059,
+        "median_absolute_error": 14.611,
+        "bias": -4.319,
+        "within_5_pct": 17.62,
+        "within_10_pct": 36.67
+      },
+      "model": {
+        "mae": 10.286,
+        "median_absolute_error": 6.508,
+        "bias": -1.008,
+        "within_5_pct": 41.19,
+        "within_10_pct": 62.38
+      },
+      "improvement_pct": 53.37
+    }
+  ]
+}
