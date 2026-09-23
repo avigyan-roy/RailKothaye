@@ -135,9 +135,12 @@ class RailETATests(unittest.TestCase):
         arrivals=self.client.get('/api/station/CNB/arrivals').json
         self.assertEqual(arrivals,sorted(arrivals,key=lambda a:a['predicted_eta']))
         self.assertEqual(self.client.post('/api/sim',json={'restart':True}).json['start_offset_min'],20)
-        for path in ('/', '/static/app.js'):
+        for path in ('/', '/index.html', '/static/index.html', '/static/app.js', '/static/style.css'):
             with self.client.get(path) as response:
                 self.assertEqual(response.status_code,200)
+                if path in ('/', '/index.html', '/static/index.html'):
+                    self.assertEqual(response.mimetype, 'text/html')
+                    self.assertIn(b'RailETA', response.data)
 
     def test_demo_event_shortcuts(self):
         gap=self.client.post('/api/sim',json={'jump_event':'gps_gap','speed':1})

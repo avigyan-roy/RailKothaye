@@ -126,7 +126,10 @@ def live_payload(train):
 
 
 @app.get('/')
+@app.get('/index.html')
 def index():
+    # Let Flask serve the homepage directly; Vercel must not rewrite it to an
+    # asset path that its generated function routing may not expose.
     return app.send_static_file('index.html')
 
 
